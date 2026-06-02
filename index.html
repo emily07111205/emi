@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>追剧小铺 - 电视剧资源目录 | 每日更新</title>
+    <!-- 简单重置与谷歌字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f7fb;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            padding: 24px 16px 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 头部卡片 */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+        }
+
+        .hero h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 i {
+            background: #facc15;
+            color: #0f172a;
+            border-radius: 50px;
+            padding: 8px;
+            font-size: 1.4rem;
+        }
+
+        .hero p {
+            margin-top: 12px;
+            opacity: 0.85;
+            font-size: 1rem;
+            max-width: 550px;
+        }
+
+        .update-badge {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(2px);
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            margin-top: 16px;
+            font-weight: 500;
+        }
+
+        /* 两列布局：左侧内容 右侧侧边栏 */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 28px;
+        }
+
+        @media (max-width: 800px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            border: 1px solid #eef2f6;
+            margin-bottom: 28px;
+        }
+
+        .card:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1.3rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.75rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-header h2 i {
+            color: #f97316;
+            font-size: 1.4rem;
+        }
+
+        .badge-date {
+            background: #eef2ff;
+            color: #2563eb;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* 电视剧列表网格 */
+        .drama-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .drama-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #edf2f7;
+            transition: 0.1s;
+        }
+
+        .drama-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .drama-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .drama-type {
+            background: #f1f5f9;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #475569;
+        }
+
+        .update-status {
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        .update-status.hot {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            background: #f8fafc;
+            padding: 4px 8px;
+            border-radius: 30px;
+            color: #334155;
+        }
+
+        /* 动态列表 */
+        .update-list {
+            list-style: none;
+        }
+
+        .update-list li {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f2f5;
+            align-items: flex-start;
+        }
+
+        .update-icon {
+            background: #ffedd5;
+            color: #c2410c;
+            width: 28px;
+            height: 28px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .update-content {
+            flex: 1;
+        }
+
+        .update-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .update-time {
+            font-size: 0.7rem;
+            color: #6c757d;
+        }
+
+        /* 右侧卡片特殊 */
+        .qrcard {
+            text-align: center;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 28px;
+            border: 1px solid #eef2f6;
+        }
+
+        .qrcode-placeholder {
+            background: #f9fafb;
+            width: 160px;
+            height: 160px;
+            margin: 16px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            border: 2px dashed #cbd5e1;
+            transition: 0.2s;
+        }
+
+        .qrcode-placeholder i {
+            font-size: 4rem;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .qrcode-placeholder span {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .qr-note {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 0.85rem;
+            margin-top: 16px;
+        }
+
+        .qr-note i {
+            margin-right: 6px;
+            color: #f97316;
+        }
+
+        .btn-wechat {
+            background: #07c160;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-wechat:hover {
+            background: #06ad56;
+            transform: scale(0.98);
+        }
+
+        .share-doc {
+            background: #fef9e3;
+            border-left: 5px solid #facc15;
+        }
+
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            padding: 12px 18px;
+            border-radius: 60px;
+            margin-top: 15px;
+            color: #0f172a;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #fde047;
+            transition: 0.2s;
+        }
+
+        .doc-link i {
+            font-size: 1.2rem;
+        }
+
+        .doc-link:hover {
+            background: #fef08a;
+            border-color: #eab308;
+        }
+
+        /* 水印或底部 */
+        .footer-note {
+            text-align: center;
+            margin-top: 45px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 24px;
+        }
+
+        /* 按钮简单交互 */
+        button {
+            background: none;
+            border: none;
+        }
+
+        .tooltip-txt {
+            cursor: help;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部区域：吸引私域+品牌 -->
+    <div class="hero">
+        <h1>
+            <i class="fas fa-tv"></i> 
+            影剧仓库 · 实时目录
+        </h1>
+        <p>📺 海量电视剧资源 | 每日更新剧集 | 加入私域享专属服务</p>
+        <div class="update-badge">
+            <i class="fas fa-sync-alt"></i> 今日更新3部热剧 · 持续上新
+        </div>
+    </div>
+
+    <div class="two-columns">
+        <!-- 左侧主内容区：电视剧目录 + 更新动态 -->
+        <div>
+            <!-- 电视剧目录卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-list-ul"></i> 电视剧目录</h2>
+                    <div class="badge-date">📌 持续扩充中</div>
+                </div>
+                <div class="drama-grid" id="dramaList">
+                    <!-- 动态js渲染电视剧目录 -->
+                </div>
+                <div style="margin-top: 16px; text-align: center; font-size: 0.75rem; color: #6c757d;">
+                    <i class="fas fa-database"></i> 共 <span id="dramaCount">0</span> 部精品剧集 · 高清资源
+                </div>
+            </div>
+
+            <!-- 更新动态卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-bell"></i> 最新动态</h2>
+                    <div class="badge-date"><i class="far fa-clock"></i> 实时播报</div>
+                </div>
+                <ul class="update-list" id="updateFeed">
+                    <!-- 动态列表js渲染 -->
+                </ul>
+                <div style="margin-top: 12px; text-align: right;">
+                    <span style="background:#f1f5f9; padding:4px 12px; border-radius:30px; font-size:0.7rem;"><i class="fas-regular fa-message"></i> 加入私域第一时间获取更新</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧侧边栏：二维码私域 + 共享文档登录区 -->
+        <div>
+            <!-- 二维码卡片：引入私域 -->
+            <div class="qrcard">
+                <i class="fab fa-weixin" style="font-size: 2rem; color: #07c160;"></i>
+                <h3 style="margin: 8px 0 4px;">扫码进群 · 私域资源库</h3>
+                <p style="font-size: 0.75rem; color: #4b5563;">获取完整目录/专享更新/一对一服务</p>
+                <!-- 模拟二维码展示区（实际可换成真实二维码图片） -->
+                <div class="qrcode-placeholder" id="qrMock">
+                    <i class="fas fa-qrcode"></i>
+                    <span>微信扫码 加入私域</span>
+                </div>
+                <div class="qr-note">
+                    <i class="fas fa-users"></i> 进群福利：免费试看+永久网盘链接
+                </div>
+                <!-- 提示：按钮模拟复制微信号或者唤起二维码大图（此处演示点击复制引导） -->
+                <button class="btn-wechat" id="copyWechatBtn">
+                    <i class="fab fa-weixin"></i> 复制掌柜微信号
+                </button>
+                <p style="font-size: 0.7rem; margin-top: 10px; color: #6c757d;">或长按二维码保存，微信扫一扫</p>
+            </div>
+
+            <!-- 共享文档登录入口（模拟在线文档/表格让大家登记） -->
+            <div class="card share-doc">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-alt"></i> 共享文档 · 登录看资源</h2>
+                </div>
+                <p style="font-size: 0.9rem; margin-bottom: 8px;">📄 为了方便大家，我们准备了在线目录表：</p>
+                <ul style="margin-left: 1.2rem; margin-bottom: 16px; font-size: 0.85rem; color: #334155;">
+                    <li>✔ 实时更新的资源链接库</li>
+                    <li>✔ 自助获取网盘+提取码</li>
+                    <li>✔ 登记需求/点播剧集</li>
+                </ul>
+                <a href="#" id="docAccessBtn" class="doc-link" target="_blank">
+                    <i class="fas fa-google-drive"></i> 立即访问共享文档
+                </a>
+                <div style="margin-top: 14px; background: #f1f5f9; padding: 10px; border-radius: 16px; font-size: 0.75rem;">
+                    <i class="fas fa-lock-open"></i> 无需繁琐登录，点击即览（可留言）
+                </div>
+            </div>
+
+            <!-- 额外引流小提示 -->
+            <div class="card" style="background: #fff7ed;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <i class="fas fa-chart-line" style="font-size: 1.8rem; color: #ea580c;"></i>
+                    <div>
+                        <strong>闲鱼专享 · 限时福利</strong>
+                        <p style="font-size: 0.75rem; margin-top: 4px;">加入私域后可享“买一送一”高清全集包</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-note">
+        <i class="far fa-copyright"></i> 追剧小铺 | 资源均整理自网络，仅供交流 | 每日更新 私域永久售后
+    </div>
+</div>
+
+<script>
+    // ---------- 电视剧目录数据 (模拟数据，可随意增删)----------
+    const dramasData = [
+        { id: 1, name: "繁花", type: "剧情/年代", status: "更新至24集", hot: true, lastUpdate: "2025-02-18" },
+        { id: 2, name: "庆余年2", type: "古装/权谋", status: "全36集", hot: true, lastUpdate: "2025-02-15" },
+        { id: 3, name: "大江大河3", type: "剧情", status: "更新至28集", hot: false, lastUpdate: "2025-02-17" },
+        { id: 4, name: "与凤行", type: "仙侠/爱情", status: "更新至18集", hot: true, lastUpdate: "2025-02-18" },
+        { id: 5, name: "新生", type: "悬疑", status: "全10集", hot: false, lastUpdate: "2025-02-10" },
+        { id: 6, name: "孤舟", type: "谍战", status: "更新至12集", hot: false, lastUpdate: "2025-02-14" },
+        { id: 7, name: "玫瑰的故事", type: "都市情感", status: "全38集", hot: true, lastUpdate: "2025-02-12" },
+        { id: 8, name: "墨雨云间", type: "古装/复仇", status: "更新至30集", hot: true, lastUpdate: "2025-02-17" }
+    ];
+
+    // 更新动态数据 (和目录联动但也可以独立)
+    let updateFeeds = [
+        { id: 1, title: "《繁花》第23-24集已更新，沪语版同步", time: "2小时前", type: "update" },
+        { id: 2, title: "新增电视剧《庆余年2》全集资源，附赠花絮", time: "昨天 14:23", type: "new" },
+        { id: 3, title: "共享文档已增加网盘链接索引，点播登记开放", time: "昨天 09:15", type: "doc" },
+        { id: 4, title: "《与凤行》今晚连更2集，超前点映私域专享", time: "2025-02-17", type: "hot" },
+        { id: 5, title: "私域微信群限时开放200人，扫码加入领取全集包", time: "2025-02-16", type: "invite" }
+    ];
+
+    // 渲染电视剧目录
+    function renderDramas() {
+        const dramaContainer = document.getElementById('dramaList');
+        const dramaCountSpan = document.getElementById('dramaCount');
+        if (!dramaContainer) return;
+        let html = '';
+        dramasData.forEach(drama => {
+            const hotBadge = drama.hot ? '<span class="update-status hot"><i class="fas fa-fire"></i> 热播中</span>' : '<span class="update-status">持续更新</span>';
+            html += `
+                <div class="drama-item">
+                    <div class="drama-info">
+                        <span class="drama-name">${escapeHtml(drama.name)}</span>
+                        <span class="drama-type">${escapeHtml(drama.type)}</span>
+                        ${hotBadge}
+                    </div>
+                    <div class="status-badge">
+                        ${escapeHtml(drama.status)} 
+                        <i class="far fa-calendar-alt" style="margin-left: 5px; font-size:0.7rem;"></i> ${drama.lastUpdate.slice(5)}
+                    </div>
+                </div>
+            `;
+        });
+        dramaContainer.innerHTML = html;
+        if(dramaCountSpan) dramaCountSpan.innerText = dramasData.length;
+    }
+
+    // 渲染动态列表
+    function renderUpdateFeeds() {
+        const feedContainer = document.getElementById('updateFeed');
+        if (!feedContainer) return;
+        let feedHtml = '';
+        updateFeeds.forEach(feed => {
+            let iconHtml = '<i class="fas fa-video"></i>';
+            if (feed.type === 'doc') iconHtml = '<i class="fas fa-file-excel"></i>';
+            else if (feed.type === 'invite') iconHtml = '<i class="fab fa-weixin"></i>';
+            else if (feed.type === 'hot') iconHtml = '<i class="fas fa-bolt"></i>';
+            else iconHtml = '<i class="fas fa-tv"></i>';
+            feedHtml += `
+                <li>
+                    <div class="update-icon">${iconHtml}</div>
+                    <div class="update-content">
+                        <div class="update-title">${escapeHtml(feed.title)}</div>
+                        <div class="update-time"><i class="far fa-clock"></i> ${escapeHtml(feed.time)}</div>
+                    </div>
+                </li>
+            `;
+        });
+        feedContainer.innerHTML = feedHtml;
+    }
+
+    // 简单防XSS辅助
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // 复制微信号功能 (私域引导)
+    const wechatId = "tvbox6688";  // 模拟微信号/联系方式
+    const copyBtn = document.getElementById('copyWechatBtn');
+    if(copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(wechatId).then(() => {
+                // 简单toast风格提示
+                showToast(`✅ 已复制微信号: ${wechatId}，打开微信添加好友进私域`);
+            }).catch(() => {
+                alert("手动添加微信号: " + wechatId);
+            });
+        });
+    }
+
+    // 简易toast组件
+    function showToast(msg) {
+        let toast = document.createElement('div');
+        toast.innerText = msg;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '30px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = '#1e293b';
+        toast.style.color = 'white';
+        toast.style.padding = '10px 20px';
+        toast.style.borderRadius = '50px';
+        toast.style.fontSize = '0.85rem';
+        toast.style.zIndex = '9999';
+        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+        toast.style.whiteSpace = 'nowrap';
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // 共享文档点击模拟: 打开一个类似在线表格的页面（可以是实际准备的腾讯文档/飞书链接）
+    // 为了演示，我们模拟一个提示框并打开一个模拟的共享文档链接（此处放置一个假的演示链接？实际中可替换为真实的共享文档URL）
+    const docLinkBtn = document.getElementById('docAccessBtn');
+    if(docLinkBtn) {
+        docLinkBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // 此处模拟 “共享文档让大家登录去看” 的功能，实际可以替换成你的腾讯文档/飞书/石墨文档链接
+            // 推荐用法：使用真实在线文档（例如腾讯文档）收集用户需求，实现登录查看。
+            const mockDocUrl = "https://docs.qq.com/sheet/DUEx?tab=BB08J2";   // 示例占位链接，实际使用时替换真实的共享文档地址
+            // 为了让演示更真实，可以弹窗提醒并跳转（或新标签页打开）
+            // 因示例无法真正保证这个链接有效，我们给出提示，并在新标签打开预设的演示说明
+            const demoUrl = "https://www.kdocs.cn/l/example";  // 建议用真实金山或腾讯文档
+            // 但是为了体验，这里提醒用户并新窗口打开一个引导页或真实的共享目录
+            if(confirm("点击确定，将跳转至共享资源文档（需要登录可查看完整网盘）。\n如果您有真实文档，请替换href即可。\n现在打开演示指引文档？")) {
+                window.open("https://shimo.im/docs/example", "_blank"); // 仅示意，实际替换为真实的共享文档链接
+                showToast("打开共享文档，登录后可查看完整资源列表和网盘链接");
+            }
+        });
+    }
+
+    // 增强二维码区域交互：点击模拟二维码时提示保存或提示扫码（实际替换真实二维码图片的话更佳）
+    const qrBox = document.getElementById('qrMock');
+    if(qrBox) {
+        qrBox.style.cursor = "pointer";
+        qrBox.addEventListener('click', () => {
+            // 这里可展示真实的微信二维码图片,演示加强:提示长按保存
+            showToast("📱 截屏保存二维码，微信扫一扫加入私域资源群");
+            // 可选: 生成一个真实二维码图片链接（实用场景中开发者可替换为真实的微信群二维码图片）
+            // 为了灵活性，我们演示时可以在控制台提醒，也可更改占位内容转为真实图片
+        });
+    }
+
+    // 动态添加新剧功能模拟 (模拟每日更新机制，增加一条动态并且目录可以增加演示)
+    // 让页面有真实更新感：可以加一个模拟今日更新按钮，自动增加目录最后一项或者动态
+    // 为了更好的体验，放置一个浮动隐藏模拟？ 最好主动添加演示增量 (可选)
+    // 为了满足“更新动态”的实时性，我们在加载后，再额外加一个定时器或者展示新增小功能
+    // 但是不需要复杂，直接静态数据也足以显示效果，为了更真实我追加一个“今日更新预览”模拟增量
+    function simulateDailyUpdate() {
+        // 模拟系统初次加载后似乎有新的剧集？可保留让用户感觉活跃。
+        // 在控制台不强制，但为了提高满意度，当页面加载后再额外增加一条动态小提示（如果用户觉得新鲜）
+        const extraFeed = {
+            id: 6,
+            title: "🔥 新增热门剧《大唐狄公案》全集高清资源已上架，目录已扩充",
+            time: "刚刚",
+            type: "update"
+        };
+        // 避免重复添加检查
+        const exists = updateFeeds.some(f => f.title.includes("大唐狄公案"));
+        if (!exists) {
+            updateFeeds.unshift(extraFeed);
+            // 同时电视剧目录也新增一部剧集，保持连贯
+            const newDrama = { id: 9, name: "大唐狄公案", type: "古装/探案", status: "全32集", hot: true, lastUpdate: "2025-02-18" };
+            const dramaExists = dramasData.some(d => d.name === "大唐狄公案");
+            if (!dramaExists) {
+                dramasData.unshift(newDrama);
+            }
+            renderDramas();
+            renderUpdateFeeds();
+        }
+    }
+    
+    // 延迟0.5s模拟一次新动态，让用户觉得每天都有上新 (迎合更新动态和目录展示)
+    setTimeout(() => {
+        simulateDailyUpdate();
+    }, 800);
+
+    // 页面整体初始化渲染
+    renderDramas();
+    renderUpdateFeeds();
+
+    // 增加一个手动更新示例: 可伪造二维码浮层等完全符合引入私域需求
+    // 满足所有要求: 电视剧目录 + 更新动态 + 粘二维码引入私域 + 共享文档让大家登录查看。
+    // 另外还能通过闲鱼引流，已经在头部描述清楚
+</script>
+</body>
+</html>
