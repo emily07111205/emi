@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>追剧小铺 - 电视剧资源目录 | 每日更新</title>
-    <!-- 简单重置与谷歌字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 (免费图标库) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -27,7 +25,6 @@
             margin: 0 auto;
         }
 
-        /* 头部卡片 */
         .hero {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border-radius: 2rem;
@@ -73,7 +70,6 @@
             font-weight: 500;
         }
 
-        /* 两列布局：左侧内容 右侧侧边栏 */
         .two-columns {
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -87,7 +83,6 @@
             }
         }
 
-        /* 通用卡片样式 */
         .card {
             background: white;
             border-radius: 1.5rem;
@@ -134,7 +129,6 @@
             font-weight: 600;
         }
 
-        /* 电视剧列表网格 */
         .drama-grid {
             display: flex;
             flex-direction: column;
@@ -192,7 +186,6 @@
             color: #334155;
         }
 
-        /* 动态列表 */
         .update-list {
             list-style: none;
         }
@@ -231,7 +224,6 @@
             color: #6c757d;
         }
 
-        /* 右侧卡片特殊 */
         .qrcard {
             text-align: center;
             background: white;
@@ -241,42 +233,12 @@
             border: 1px solid #eef2f6;
         }
 
-        .qrcode-placeholder {
-            background: #f9fafb;
-            width: 160px;
-            height: 160px;
-            margin: 16px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px;
-            border: 2px dashed #cbd5e1;
-            transition: 0.2s;
-        }
-
-        .qrcode-placeholder i {
-            font-size: 4rem;
-            color: #475569;
-            margin-bottom: 8px;
-        }
-
-        .qrcode-placeholder span {
-            font-size: 12px;
-            color: #64748b;
-        }
-
         .qr-note {
             background: #f1f5f9;
             border-radius: 12px;
             padding: 10px;
             font-size: 0.85rem;
             margin-top: 16px;
-        }
-
-        .qr-note i {
-            margin-right: 6px;
-            color: #f97316;
         }
 
         .btn-wechat {
@@ -322,16 +284,11 @@
             transition: 0.2s;
         }
 
-        .doc-link i {
-            font-size: 1.2rem;
-        }
-
         .doc-link:hover {
             background: #fef08a;
             border-color: #eab308;
         }
 
-        /* 水印或底部 */
         .footer-note {
             text-align: center;
             margin-top: 45px;
@@ -340,21 +297,10 @@
             border-top: 1px solid #e2e8f0;
             padding-top: 24px;
         }
-
-        /* 按钮简单交互 */
-        button {
-            background: none;
-            border: none;
-        }
-
-        .tooltip-txt {
-            cursor: help;
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- 头部区域：吸引私域+品牌 -->
     <div class="hero">
         <h1>
             <i class="fas fa-tv"></i> 
@@ -367,60 +313,48 @@
     </div>
 
     <div class="two-columns">
-        <!-- 左侧主内容区：电视剧目录 + 更新动态 -->
         <div>
-            <!-- 电视剧目录卡片 -->
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-list-ul"></i> 电视剧目录</h2>
                     <div class="badge-date">📌 持续扩充中</div>
                 </div>
-                <div class="drama-grid" id="dramaList">
-                    <!-- 动态js渲染电视剧目录 -->
-                </div>
+                <div class="drama-grid" id="dramaList"></div>
                 <div style="margin-top: 16px; text-align: center; font-size: 0.75rem; color: #6c757d;">
                     <i class="fas fa-database"></i> 共 <span id="dramaCount">0</span> 部精品剧集 · 高清资源
                 </div>
             </div>
 
-            <!-- 更新动态卡片 -->
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-bell"></i> 最新动态</h2>
                     <div class="badge-date"><i class="far fa-clock"></i> 实时播报</div>
                 </div>
-                <ul class="update-list" id="updateFeed">
-                    <!-- 动态列表js渲染 -->
-                </ul>
+                <ul class="update-list" id="updateFeed"></ul>
                 <div style="margin-top: 12px; text-align: right;">
                     <span style="background:#f1f5f9; padding:4px 12px; border-radius:30px; font-size:0.7rem;"><i class="fas-regular fa-message"></i> 加入私域第一时间获取更新</span>
                 </div>
             </div>
         </div>
 
-        <!-- 右侧侧边栏：二维码私域 + 共享文档登录区 -->
         <div>
-            <!-- 二维码卡片：引入私域 -->
             <div class="qrcard">
                 <i class="fab fa-weixin" style="font-size: 2rem; color: #07c160;"></i>
                 <h3 style="margin: 8px 0 4px;">扫码进群 · 私域资源库</h3>
                 <p style="font-size: 0.75rem; color: #4b5563;">获取完整目录/专享更新/一对一服务</p>
-                <!-- 模拟二维码展示区（实际可换成真实二维码图片） -->
-                <div class="qrcode-placeholder" id="qrMock">
-                    <i class="fas fa-qrcode"></i>
-                    <span>微信扫码 加入私域</span>
-                </div>
+                
+                <!-- 二维码图片 -->
+                <img src="https://raw.githubusercontent.com/emily07111205/emi/main/wechat.jpg" alt="微信二维码" style="width: 160px; height: 160px; border-radius: 16px; margin: 16px auto; display: block; border: 1px solid #e2e8f0;">
+                
                 <div class="qr-note">
                     <i class="fas fa-users"></i> 进群福利：免费试看+永久网盘链接
                 </div>
-                <!-- 提示：按钮模拟复制微信号或者唤起二维码大图（此处演示点击复制引导） -->
                 <button class="btn-wechat" id="copyWechatBtn">
                     <i class="fab fa-weixin"></i> 复制掌柜微信号
                 </button>
                 <p style="font-size: 0.7rem; margin-top: 10px; color: #6c757d;">或长按二维码保存，微信扫一扫</p>
             </div>
 
-            <!-- 共享文档登录入口（模拟在线文档/表格让大家登记） -->
             <div class="card share-doc">
                 <div class="card-header">
                     <h2><i class="fas fa-file-alt"></i> 共享文档 · 登录看资源</h2>
@@ -439,13 +373,12 @@
                 </div>
             </div>
 
-            <!-- 额外引流小提示 -->
             <div class="card" style="background: #fff7ed;">
                 <div style="display: flex; gap: 12px; align-items: center;">
                     <i class="fas fa-chart-line" style="font-size: 1.8rem; color: #ea580c;"></i>
                     <div>
                         <strong>闲鱼专享 · 限时福利</strong>
-                        <p style="font-size: 0.75rem; margin-top: 4px;">加入私域后可享“买一送一”高清全集包</p>
+                        <p style="font-size: 0.75rem; margin-top: 4px;">加入私域后可享"买一送一"高清全集包</p>
                     </div>
                 </div>
             </div>
@@ -457,7 +390,6 @@
 </div>
 
 <script>
-    // ---------- 电视剧目录数据 (模拟数据，可随意增删)----------
     const dramasData = [
         { id: 1, name: "繁花", type: "剧情/年代", status: "更新至24集", hot: true, lastUpdate: "2025-02-18" },
         { id: 2, name: "庆余年2", type: "古装/权谋", status: "全36集", hot: true, lastUpdate: "2025-02-15" },
@@ -466,11 +398,11 @@
         { id: 5, name: "新生", type: "悬疑", status: "全10集", hot: false, lastUpdate: "2025-02-10" },
         { id: 6, name: "孤舟", type: "谍战", status: "更新至12集", hot: false, lastUpdate: "2025-02-14" },
         { id: 7, name: "玫瑰的故事", type: "都市情感", status: "全38集", hot: true, lastUpdate: "2025-02-12" },
-        { id: 8, name: "墨雨云间", type: "古装/复仇", status: "更新至30集", hot: true, lastUpdate: "2025-02-17" }
+        { id: 8, name: "墨雨云间", type: "古装/复仇", status: "更新至30集", hot: true, lastUpdate: "2025-02-17" },
+        { id: 9, name: "大唐狄公案", type: "古装/探案", status: "全32集", hot: true, lastUpdate: "2025-02-18" }
     ];
 
-    // 更新动态数据 (和目录联动但也可以独立)
-    let updateFeeds = [
+    const updateFeeds = [
         { id: 1, title: "《繁花》第23-24集已更新，沪语版同步", time: "2小时前", type: "update" },
         { id: 2, title: "新增电视剧《庆余年2》全集资源，附赠花絮", time: "昨天 14:23", type: "new" },
         { id: 3, title: "共享文档已增加网盘链接索引，点播登记开放", time: "昨天 09:15", type: "doc" },
@@ -478,7 +410,6 @@
         { id: 5, title: "私域微信群限时开放200人，扫码加入领取全集包", time: "2025-02-16", type: "invite" }
     ];
 
-    // 渲染电视剧目录
     function renderDramas() {
         const dramaContainer = document.getElementById('dramaList');
         const dramaCountSpan = document.getElementById('dramaCount');
@@ -504,7 +435,6 @@
         if(dramaCountSpan) dramaCountSpan.innerText = dramasData.length;
     }
 
-    // 渲染动态列表
     function renderUpdateFeeds() {
         const feedContainer = document.getElementById('updateFeed');
         if (!feedContainer) return;
@@ -528,7 +458,6 @@
         feedContainer.innerHTML = feedHtml;
     }
 
-    // 简单防XSS辅助
     function escapeHtml(str) {
         if(!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -536,26 +465,20 @@
             if(m === '<') return '&lt;';
             if(m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
 
-    // 复制微信号功能 (私域引导)
-    const wechatId = "tvbox6688";  // 模拟微信号/联系方式
     const copyBtn = document.getElementById('copyWechatBtn');
     if(copyBtn) {
         copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(wechatId).then(() => {
-                // 简单toast风格提示
-                showToast(`✅ 已复制微信号: ${wechatId}，打开微信添加好友进私域`);
+            navigator.clipboard.writeText("momo361383").then(() => {
+                showToast("✅ 已复制微信号: momo361383，打开微信添加好友进私域");
             }).catch(() => {
-                alert("手动添加微信号: " + wechatId);
+                alert("手动添加微信号: momo361383");
             });
         });
     }
 
-    // 简易toast组件
     function showToast(msg) {
         let toast = document.createElement('div');
         toast.innerText = msg;
@@ -570,7 +493,6 @@
         toast.style.fontSize = '0.85rem';
         toast.style.zIndex = '9999';
         toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-        toast.style.whiteSpace = 'nowrap';
         document.body.appendChild(toast);
         setTimeout(() => {
             toast.style.opacity = '0';
@@ -578,79 +500,19 @@
         }, 2000);
     }
 
-    // 共享文档点击模拟: 打开一个类似在线表格的页面（可以是实际准备的腾讯文档/飞书链接）
-    // 为了演示，我们模拟一个提示框并打开一个模拟的共享文档链接（此处放置一个假的演示链接？实际中可替换为真实的共享文档URL）
     const docLinkBtn = document.getElementById('docAccessBtn');
     if(docLinkBtn) {
         docLinkBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            // 此处模拟 “共享文档让大家登录去看” 的功能，实际可以替换成你的腾讯文档/飞书/石墨文档链接
-            // 推荐用法：使用真实在线文档（例如腾讯文档）收集用户需求，实现登录查看。
-            const mockDocUrl = "https://docs.qq.com/sheet/DUEx?tab=BB08J2";   // 示例占位链接，实际使用时替换真实的共享文档地址
-            // 为了让演示更真实，可以弹窗提醒并跳转（或新标签页打开）
-            // 因示例无法真正保证这个链接有效，我们给出提示，并在新标签打开预设的演示说明
-            const demoUrl = "https://www.kdocs.cn/l/example";  // 建议用真实金山或腾讯文档
-            // 但是为了体验，这里提醒用户并新窗口打开一个引导页或真实的共享目录
-            if(confirm("点击确定，将跳转至共享资源文档（需要登录可查看完整网盘）。\n如果您有真实文档，请替换href即可。\n现在打开演示指引文档？")) {
-                window.open("https://shimo.im/docs/example", "_blank"); // 仅示意，实际替换为真实的共享文档链接
+            if(confirm("点击确定，将跳转至共享资源文档（需要登录可查看完整网盘）。")) {
+                window.open("https://shimo.im/docs/example", "_blank");
                 showToast("打开共享文档，登录后可查看完整资源列表和网盘链接");
             }
         });
     }
 
-    // 增强二维码区域交互：点击模拟二维码时提示保存或提示扫码（实际替换真实二维码图片的话更佳）
-    const qrBox = document.getElementById('qrMock');
-    if(qrBox) {
-        qrBox.style.cursor = "pointer";
-        qrBox.addEventListener('click', () => {
-            // 这里可展示真实的微信二维码图片,演示加强:提示长按保存
-            showToast("📱 截屏保存二维码，微信扫一扫加入私域资源群");
-            // 可选: 生成一个真实二维码图片链接（实用场景中开发者可替换为真实的微信群二维码图片）
-            // 为了灵活性，我们演示时可以在控制台提醒，也可更改占位内容转为真实图片
-        });
-    }
-
-    // 动态添加新剧功能模拟 (模拟每日更新机制，增加一条动态并且目录可以增加演示)
-    // 让页面有真实更新感：可以加一个模拟今日更新按钮，自动增加目录最后一项或者动态
-    // 为了更好的体验，放置一个浮动隐藏模拟？ 最好主动添加演示增量 (可选)
-    // 为了满足“更新动态”的实时性，我们在加载后，再额外加一个定时器或者展示新增小功能
-    // 但是不需要复杂，直接静态数据也足以显示效果，为了更真实我追加一个“今日更新预览”模拟增量
-    function simulateDailyUpdate() {
-        // 模拟系统初次加载后似乎有新的剧集？可保留让用户感觉活跃。
-        // 在控制台不强制，但为了提高满意度，当页面加载后再额外增加一条动态小提示（如果用户觉得新鲜）
-        const extraFeed = {
-            id: 6,
-            title: "🔥 新增热门剧《大唐狄公案》全集高清资源已上架，目录已扩充",
-            time: "刚刚",
-            type: "update"
-        };
-        // 避免重复添加检查
-        const exists = updateFeeds.some(f => f.title.includes("大唐狄公案"));
-        if (!exists) {
-            updateFeeds.unshift(extraFeed);
-            // 同时电视剧目录也新增一部剧集，保持连贯
-            const newDrama = { id: 9, name: "大唐狄公案", type: "古装/探案", status: "全32集", hot: true, lastUpdate: "2025-02-18" };
-            const dramaExists = dramasData.some(d => d.name === "大唐狄公案");
-            if (!dramaExists) {
-                dramasData.unshift(newDrama);
-            }
-            renderDramas();
-            renderUpdateFeeds();
-        }
-    }
-    
-    // 延迟0.5s模拟一次新动态，让用户觉得每天都有上新 (迎合更新动态和目录展示)
-    setTimeout(() => {
-        simulateDailyUpdate();
-    }, 800);
-
-    // 页面整体初始化渲染
     renderDramas();
     renderUpdateFeeds();
-
-    // 增加一个手动更新示例: 可伪造二维码浮层等完全符合引入私域需求
-    // 满足所有要求: 电视剧目录 + 更新动态 + 粘二维码引入私域 + 共享文档让大家登录查看。
-    // 另外还能通过闲鱼引流，已经在头部描述清楚
 </script>
 </body>
 </html>
